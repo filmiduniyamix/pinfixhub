@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1",
+    "title": "Minimalist Desktop Workspace",
+    "image": "https://images.unsplash.com/photo-1518455027359-f3fc8cb10806?w=800&q=80",
+    "description": "A clean and modern workspace setup is essential for productivity. \n\nCheck out this amazing guide: https://unsplash.com/s/photos/workspace \n\nGet inspired today! #minimalist #setup #productivity",
+    "categories": ["Design", "Tech"],
+    "tags": ["minimalist", "setup", "workspace"],
+    "external_link": "https://unsplash.com",
+    "views": 1250,
+    "date": "2023-10-01"
+  },
+  {
+    "id": "2",
+    "title": "Neon Cyberpunk Streets",
+    "image": "https://images.unsplash.com/photo-1555861496-faa00a4306cf?w=800&q=80",
+    "description": "Tokyo nights are something else. The neon lights reflect perfectly in the puddles. #cyberpunk #neon #photography \n\nSee more here: https://unsplash.com",
+    "categories": ["Photography", "Art"],
+    "tags": ["neon", "tokyo", "cyberpunk"],
+    "external_link": "https://unsplash.com",
+    "views": 3400,
+    "date": "2023-10-05"
+  },
+  {
+    "id": "3",
+    "title": "Abstract Fluid Art",
+    "image": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&q=80",
+    "description": "Mixing colors to create smooth visual experiences. Perfect for a mobile wallpaper. #art #fluid #colors",
+    "categories": ["Art", "Design"],
+    "tags": ["abstract", "fluid", "wallpaper"],
+    "external_link": "",
+    "views": 890,
+    "date": "2023-10-10"
+  }
+]
