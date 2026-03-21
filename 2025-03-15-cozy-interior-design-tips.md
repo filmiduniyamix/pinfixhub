@@ -11,4 +11,4 @@ This is a long post with multiple images. Here's a gallery you can use:
 
 {% include gallery.html images="/assets/images/post1/gallery1.jpg,/assets/images/post1/gallery2.jpg" %}
 
-You can also add unlimited text and external links like [this design blog](https://example.com). The lightbox effect will apply to all images automatically.
+You can also add unlimited text and external links like [this design blog](https://filmiduniyamix.github.io/pinfixhub/). The lightbox effect will apply to all images automatically.
