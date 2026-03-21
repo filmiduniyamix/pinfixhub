@@ -1,0 +1,29 @@
+---
+layout: default
+---
+<div class="masonry-grid">
+  {% for post in paginator.posts %}
+  <a href="{{ post.url | relative_url }}" class="card">
+    {% if post.image %}
+    <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">
+    {% endif %}
+    <div class="card-body">
+      <h2 class="card-title">{{ post.title }}</h2>
+      <p class="card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 15 }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if paginator.total_pages > 1 %}
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | relative_url }}">&laquo; Prev</a>
+  {% endif %}
+  <span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | relative_url }}">Next &raquo;</a>
+  {% endif %}
+</div>
+{% endif %}
