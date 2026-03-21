@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<div class="posts-grid">
+  {% for post in paginator.posts %}
+    <article class="post-card">
+      <a href="{{ post.url | relative_url }}">
+        <img src="{{ post.featured_image | relative_url }}" alt="{{ post.title }}" loading="lazy">
+        <div class="card-content">
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.description }}</p>
+        </div>
+      </a>
+    </article>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | relative_url }}" class="prev">← Newer Posts</a>
+  {% endif %}
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | relative_url }}" class="next">Older Posts →</a>
+  {% endif %}
+</div>

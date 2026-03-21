@@ -1,0 +1,265 @@
+---
+---
+$primary: #e60023;
+$text: #111;
+$gray: #efefef;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  line-height: 1.6;
+  color: $text;
+  background: #fff;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.site-header {
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $primary;
+  text-decoration: none;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: $text;
+  transition: color 0.2s;
+}
+
+nav a:hover { color: $primary; }
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Homepage Grid */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.post-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.post-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-card img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-content h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-content p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: $primary;
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  margin: 0 0.5rem;
+}
+
+/* Post Page */
+.post-header {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.post-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-meta {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.featured-image {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.post-content {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+.post-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  cursor: pointer;
+}
+
+/* Gallery Grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.gallery-grid a {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.gallery-grid a:hover img {
+  transform: scale(1.05);
+}
+
+/* Related Posts */
+.related-posts {
+  margin: 3rem auto;
+  max-width: 800px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.related-card {
+  background: $gray;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.related-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.related-card h4 {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Like Button */
+.like-section {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.like-btn {
+  background: none;
+  border: 1px solid $primary;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: $primary;
+}
+
+.like-btn:hover {
+  background: $primary;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  nav {
+    display: none;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  nav.show {
+    display: block;
+  }
+  nav a {
+    display: block;
+    margin: 0.5rem 0;
+  }
+}

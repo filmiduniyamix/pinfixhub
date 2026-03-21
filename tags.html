@@ -1,0 +1,17 @@
+---
+layout: default
+title: Tags
+---
+<div class="tags-page">
+  <h1>Tags</h1>
+  <div class="tag-cloud">
+    {% for tag in site.tags %}
+      <h2 id="{{ tag[0] | slugify }}">#{{ tag[0] }}</h2>
+      <ul>
+        {% for post in tag[1] %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a> - {{ post.date | date: "%B %d, %Y" }}</li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEGAMOVIES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0d0f11;
+            --header-bg: #1a1d21;
+            --text-color: #e4e6ea;
+            --text-color-light: #a0a4ab;
+            --accent-color: #ffcc00; /* Yellow for search and stars */
+            --accent-secondary: #ff6b6b; /* Red accent */
+            --border-color: #2c2f33;
+            --shadow-color: rgba(0, 0, 0, 0.6);
+            --filter-bg: #24272b;
+            --btn-gradient: linear-gradient(45deg, #8A4FFF, #30D5C8);
+            --card-bg: #1a1d21;
+            --hover-color: #2a2d32;
+        }
+
+        .light-mode {
+            --bg-color: #f6f8fa;
+            --header-bg: #ffffff;
+            --text-color: #24292f;
+            --text-color-light: #57606a;
+            --accent-color: #e5c100;
+            --accent-secondary: #e53935;
+            --border-color: #d0d7de;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --filter-bg: #eeeeee;
+            --card-bg: #ffffff;
+            --hover-color: #f0f0f0;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            line-height: 1.6; 
+            transition: background-color 0.3s, color 0.3s; 
+        }
+        .container { 
+            max-width: 1280px; 
+            margin: 0 auto; 
+            padding: 0 15px; 
+        }
+        
+        /* Header & Navigation */
+        header { 
+            background-color: var(--header-bg); 
+            padding: 12px 0; 
+            border-bottom: 1px solid var(--border-color); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .logo { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: var(--text-color); 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+        .logo-accent { 
+            color: var(--accent-secondary); 
+            background: var(--btn-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+        }
+        .theme-toggle { 
+            background: var(--filter-bg); 
+            border: 1px solid var(--border-color); 
+            color: var(--text-color); 
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle:hover { 
+            background-color: var(--hover-color); 
+            transform: rotate(15deg);
+        }
+        .menu-toggle { 
+            display: none; 
+            background: none; 
+            border: none; 
+            color: var(--text-color); 
+            font-size: 24px; 
+            cursor: pointer; 
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .menu-toggle:hover {
+            background-color: var(--hover-color);
+        }
+        
+        nav.desktop-nav ul { 
+            display: flex; 
+            list-style: none; 
+            gap: 5px;
+        }
+        nav.desktop-nav ul li { 
+            position: relative; 
+        }
+        nav.desktop-nav ul li a { 
+            color: var(--text-color); 
+            text-decoration: none; 
+            padding: 10px 18px; 
+            border-radius: 6px; 
+            transition: all 0.3s; 
+            font-weight: 500; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 15px;
+        }
+        nav.desktop-nav ul li a:hover { 
+            background-color: var(--hover-color); 
+            color: var(--accent-color);
+        }
+        .dropdown-menu { 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            background-color: var(--header-bg); 
+            min-width: 200px; 
+            border-radius: 8px; 
+            box-shadow: 0 8px 20px var(--shadow-color); 
+            opacity: 0; 
+            visibility: hidden; 
+            transform: translateY(-10px); 
+            transition: all 0.3s ease; 
+            z-index: 1001; 
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        nav.desktop-nav ul li:hover .dropdown-menu { 
+            opacity: 1; 
+            visibility: visible; 
+            transform: translateY(0); 
+        }
+        .dropdown-menu ul { 
+            display: flex; 
+            flex-direction: column; 
+            padding: 8px 0; 
+        }
+        .dropdown-menu ul li a { 
+            width: 100%; 
+            border-radius: 0;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        .dropdown-menu ul li a:hover {
+            background-color: var(--hover-color);
+        }
+
+        .mobile-nav { 
+            display: none; 
+            background-color: var(--header-bg); 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            right: 0; 
+            z-index: 999; 
+            box-shadow: 0 4px 12px var(--shadow-color); 
+            border-top: 1px solid var(--border-color);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .mobile-nav.active { 
+            display: block; 
+        }
+        .mobile-nav ul { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .mobile-nav ul li a { 
+            padding: 14px 20px; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .mobile-nav ul li a:hover {
+            background-color: var(--hover-color);
+        }
+        .mobile-dropdown { 
+            display: none; 
+            background-color: var(--filter-bg); 
+        }
+        .mobile-dropdown.active { 
+            display: block; 
+        }
+        .mobile-dropdown ul li a { 
+            padding-left: 40px; 
+            font-size: 14px;
+        }
+
+        /* Search & Filters Section */
+        .search-and-filters-wrapper { 
+            padding: 25px 0; 
+        }
+        .search-box { 
+            display: flex; 
+            margin-bottom: 25px; 
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .search-box input { 
+            flex-grow: 1; 
+            padding: 14px 18px; 
+            border: 1px solid var(--border-color); 
+            background-color: var(--filter-bg); 
+            color: var(--text-color); 
+            border-radius: 8px 0 0 8px; 
+            font-size: 16px; 
+            outline: none; 
+            transition: border-color 0.3s;
+        }
+        .search-box input:focus { 
+            border-color: var(--accent-color); 
+        }
+        .search-box button { 
+            padding: 0 25px; 
+            border: none; 
+            background: var(--btn-gradient); 
+            color: #000; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border-radius: 0 8px 8px 0; 
+            font-size: 16px; 
+            transition: all 0.3s; 
+        }
+        .search-box button:hover { 
+            opacity: 0.9; 
+            transform: translateY(-1px);
+        }
+
+        .filter-buttons-grid { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            justify-content: center; 
+            margin-bottom: 20px;
+        }
+        .filter-btn { 
+            text-decoration: none; 
+            color: #fff; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: 500; 
+            font-size: 14px; 
+            transition: all 0.3s; 
+            border: none; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .filter-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .filter-btn.active { 
+            box-shadow: 0 0 0 2px var(--accent-color); 
+            transform: translateY(-2px); 
+        }
+        .btn-green { background-color: #1a8e5a; } 
+        .btn-yellow { background: #E6A11D; } 
+        .btn-red { background: #d32f2f; } 
+        .btn-blue { background: #29b6f6; } 
+        .btn-pink { background: #ec407a; } 
+        .btn-grey { background-color: #424242; color: var(--text-color); }
+
+        .app-download-btn { 
+            display: block; 
+            width: fit-content; 
+            margin: 25px auto 0 auto; 
+            background: var(--btn-gradient); 
+            color: white; 
+            padding: 14px 35px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            text-decoration: none; 
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .app-download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* POST GRID & CARD STYLES */
+        .main-content { 
+            padding: 30px 0; 
+        }
+        .posts-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 25px; 
+        }
+        .post-card { 
+            background-color: var(--card-bg); 
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-color);
+        }
+        .post-thumbnail { 
+            position: relative; 
+            width: 100%; 
+            padding-top: 150%; 
+            height: 0; 
+            background-color: var(--filter-bg); 
+            border-radius: 8px 8px 0 0; 
+            margin-bottom: 0; 
+            overflow: hidden; 
+            flex-shrink: 0;
+        }
+        .post-thumbnail:hover img { 
+            transform: scale(1.05); 
+        }
+        .post-thumbnail img { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.4s ease; 
+        }
+        
+        /* Badges on Card */
+        .quality-badge { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            background-color: rgba(211, 47, 47, 0.9); 
+            color: white; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+        }
+        .star-badge { 
+            position: absolute; 
+            bottom: 10px; 
+            left: 10px; 
+            background-color: var(--accent-color); 
+            color: #000; 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 14px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .resolution-badge { 
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            background-color: rgba(30, 136, 229, 0.9); 
+            color: white; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            font-weight: bold; 
+        }
+
+        .post-content { 
+            padding: 15px; 
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .post-date { 
+            font-size: 12px; 
+            color: var(--text-color-light); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .post-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+        }
+        .post-details-text { 
+            color: var(--text-color-light); 
+            font-size: 13px; 
+            font-weight: 400; 
+            line-height: 1.5; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 3; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+            margin-bottom: 15px; 
+            flex-grow: 1;
+        }
+        .download-btn { 
+            display: block; 
+            background: var(--btn-gradient); 
+            color: white; 
+            text-align: center; 
+            padding: 12px; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 14px; 
+            transition: all 0.3s ease; 
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        .download-btn i { 
+            margin-right: 8px; 
+        }
+        .download-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            opacity: 0.9; 
+        }
+
+        /* === PAGINATION STYLES === */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            padding: 10px 16px;
+            background-color: var(--filter-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 44px;
+        }
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--hover-color);
+            border-color: var(--accent-color);
+        }
+        .pagination button.active {
+            background-color: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        footer { 
+            text-align: center; 
+            padding: 30px 0; 
+            margin-top: 40px; 
+            border-top: 1px solid var(--border-color); 
+            font-size: 14px; 
+            color: var(--text-color-light); 
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) { 
+            nav.desktop-nav { display: none; } 
+            .menu-toggle { display: flex; align-items: center; justify-content: center; } 
+            .posts-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+        }
+        @media (max-width: 768px) { 
+            .posts-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
+            .search-box { margin-bottom: 20px; }
+            .filter-buttons-grid { gap: 10px; }
+            .filter-btn { padding: 8px 16px; font-size: 13px; }
+            .post-title {
+                font-size: 15px;
+                -webkit-line-clamp: 2;
+            }
+            .post-details-text {
+                font-size: 12.5px;
+                -webkit-line-clamp: 3;
+            }
+        }
+        @media (max-width: 600px) {
+            .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .logo { font-size: 20px; }
+            .header-right { gap: 10px; }
+            .theme-toggle, .menu-toggle { width: 36px; height: 36px; font-size: 18px; }
+            .search-box input { padding: 12px 15px; }
+            .search-box button { padding: 0 20px; }
+            .app-download-btn { padding: 12px 25px; font-size: 14px; }
+            .post-content { padding: 12px; }
+        }
+        @media (max-width: 480px) { 
+            .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .container { padding: 0 10px; }
+            .post-title {
+                font-size: 14px;
+                -webkit-line-clamp: 2;
+            }
+            .post-details-text {
+                font-size: 12px;
+                -webkit-line-clamp: 3;
+            }
+            .pagination button { padding: 8px 12px; min-width: 40px; font-size: 14px; }
+        }
+        @media (max-width: 360px) {
+            .posts-grid { grid-template-columns: 1fr; }
+            .filter-buttons-grid { justify-content: flex-start; overflow-x: auto; padding-bottom: 10px; }
+            .filter-btn { flex-shrink: 0; }
+            .post-title {
+                font-size: 15px;
+            }
+            .post-details-text {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">VEGA<span class="logo-accent">HDHUB4U</span></div>
+                
+                <nav class="desktop-nav">
+                    <ul>
+                        <li><a href="https://vegahdhub4u.pages.dev/"><i class="fas fa-home"></i> HOME</a></li>
+                        <li>
+                            <a href="#"><i class="fas fa-list"></i> CATEGORIES <i class="fas fa-caret-down"></i></a>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="#" data-category="all">All</a></li>
+                                    <li><a href="#" data-category="mystery">Mystery</a></li>
+                                    <li><a href="#" data-category="comedy">Comedy</a></li>
+                                    <li><a href="#" data-category="thriller">Thriller</a></li>
+                                    <li><a href="#" data-category="drama">Drama</a></li>
+                                    <li><a href="#" data-category="crime">Crime</a></li>
+                                    <li><a href="#" data-category="action">Action</a></li>
+                                    <li><a href="#" data-category="romantic">Romantic</a></li>
+                                    <li><a href="#" data-category="fantasy">Fantasy</a></li>
+                                    <li><a href="#" data-category="horror">Horror</a></li>
+                                    <li><a href="#" data-category="adventure">Adventure</a></li>
+                                    <li><a href="#" data-category="animation">Animation</a></li>
+                                    <li><a href="#" data-category="zombie">Zombie</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                         <li>
+                            <a href="#"><i class="fas fa-hd"></i> QUALITY <i class="fas fa-caret-down"></i></a>
+                            <div class="dropdown-menu">
+                                <ul>
+                                     <li><a href="#" data-quality="all">All Quality</a></li>
+                                     <li><a href="#" data-quality="480p">480p</a></li>
+                                     <li><a href="#" data-quality="720p">720p</a></li>
+                                     <li><a href="#" data-quality="1080p">1080p</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- New Language Menu Item -->
+                        <li>
+                            <a href="#"><i class="fas fa-language"></i> LANGUAGE <i class="fas fa-caret-down"></i></a>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="#" data-language="all">All Languages</a></li>
+                                    <li><a href="#" data-language="hindi">Hindi</a></li>
+                                    <li><a href="#" data-language="english">English</a></li>
+                                    <li><a href="#" data-language="tamil">Tamil</a></li>
+                                    <li><a href="#" data-language="telugu">Telugu</a></li>
+                                    <li><a href="#" data-language="korean">Korean</a></li>
+                                    <li><a href="#" data-language="japanese">Japanese</a></li>
+                                    <li><a href="#" data-language="malayalam">Malayalam</a></li>
+                                <li><a href="#" data-language="kannada">Kannada</a></li>
+                                <li><a href="#" data-language="marathi">Marathi</a></li>
+                                <li><a href="#" data-language="bangla">Bangla</a></li>
+                                    <li><a href="#" data-language="punjabi">Punjabi</a></li>
+                                    <li><a href="#" data-language="tagalog">Tagalog</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+             <nav class="mobile-nav" id="mobileNav">
+                <ul>
+                    <li><a href="https://vegahdhub4u.pages.dev/"><i class="fas fa-home"></i> HOME</a></li>
+                    <li>
+                        <a href="#" class="mobile-dropdown-toggle"><i class="fas fa-list"></i> CATEGORIES <i class="fas fa-caret-down"></i></a>
+                        <div class="mobile-dropdown">
+                            <ul>
+                                <li><a href="#" data-category="all">All</a></li>
+                                    <li><a href="#" data-category="mystery">Mystery</a></li>
+                                    <li><a href="#" data-category="comedy">Comedy</a></li>
+                                    <li><a href="#" data-category="thriller">Thriller</a></li>
+                                    <li><a href="#" data-category="drama">Drama</a></li>
+                                    <li><a href="#" data-category="crime">Crime</a></li>
+                                    <li><a href="#" data-category="action">Action</a></li>
+                                    <li><a href="#" data-category="romantic">Romantic</a></li>
+                                    <li><a href="#" data-category="fantasy">Fantasy</a></li>
+                                    <li><a href="#" data-category="horror">Horror</a></li>
+                                    <li><a href="#" data-category="adventure">Adventure</a></li>
+                                    <li><a href="#" data-category="animation">Animation</a></li>
+                                    <li><a href="#" data-category="zombie">Zombie</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="mobile-dropdown-toggle"><i class="fas fa-hd"></i> QUALITY <i class="fas fa-caret-down"></i></a>
+                        <div class="mobile-dropdown">
+                            <ul>
+                                <li><a href="#" data-quality="all">All Quality</a></li>
+                                <li><a href="#" data-quality="480p">480p</a></li>
+                                <li><a href="#" data-quality="720p">720p</a></li>
+                                <li><a href="#" data-quality="1080p">1080p</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- New Language Menu Item for Mobile -->
+                    <li>
+                        <a href="#" class="mobile-dropdown-toggle"><i class="fas fa-language"></i> LANGUAGE <i class="fas fa-caret-down"></i></a>
+                        <div class="mobile-dropdown">
+                            <ul>
+                                <li><a href="#" data-language="all">All Languages</a></li>
+                                <li><a href="#" data-language="hindi">Hindi</a></li>
+                                <li><a href="#" data-language="english">English</a></li>
+                                <li><a href="#" data-language="tamil">Tamil</a></li>
+                                <li><a href="#" data-language="telugu">Telugu</a></li>
+                                <li><a href="#" data-language="korean">Korean</a></li>
+                                <li><a href="#" data-language="japanese">Japanese</a></li>
+                                <li><a href="#" data-language="malayalam">Malayalam</a></li>
+                                <li><a href="#" data-language="kannada">Kannada</a></li>
+                                <li><a href="#" data-language="marathi">Marathi</a></li>
+                                <li><a href="#" data-language="bangla">Bangla</a></li>
+                                <li><a href="#" data-language="punjabi">Punjabi</a></li>
+                                <li><a href="#" data-language="tagalog">Tagalog</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-and-filters-wrapper">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for movies, series...">
+                <button id="searchButton">Search</button>
+            </div>
+            <div class="filter-buttons-grid">
+                <a href="#" class="filter-btn btn-green"><i class="fas fa-film"></i> RogMovies</a>
+                <a href="#" class="filter-btn btn-yellow">GokuHD</a>
+                <a href="https://a2ztghubfiles.pages.dev/" class="filter-btn btn-red">18+ a2ztghubfiles</a>
+                <a href="https://t.me/vegahdhub4u" class="filter-btn btn-blue"><i class="fab fa-telegram-plane"></i> Join Telegram</a>
+                <button class="filter-btn btn-grey" data-filter="bollywood">Bollywood</button>
+                <button class="filter-btn btn-grey" data-filter="hollwood">Hollwood</button>
+                <button class="filter-btn btn-grey" data-filter="kdrama">K-Drama</button>
+                <button class="filter-btn btn-grey" data-filter="netflix">Netflix</button>
+                <button class="filter-btn btn-grey" data-filter="south">South</button>
+            </div>
+            <a href="#" class="app-download-btn">Download Our Official App</a>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="posts-grid" id="postsGrid"></div>
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">&copy; 2025 VEGAHDHUB4U . All rights reserved.</div>
+    </footer>
+    
+    <script>
+        const contentData = [
+            { 
+                id: 1, 
+                title: "Mamasan [2025]", 
+                details: "Mamasan [2025] Tagalog 480p & 720p & 1080p Fast Download  Watch Online Blu-Ray", 
+                date: "Nov 3, 2025", 
+                thumbnail: "https://i.postimg.cc/9MSsT09H/IMG-20251103-140110-480.jpg", 
+                badge: "Blu-Ray", 
+                quality: "1080p", 
+                categories: ["720p", "1080p", "480p","drama", "tagalog", "action"], 
+                languages: ["tagalog"],
+                downloadUrl: "https://gplinks.co/FhFemK8" 
+            },
+            { 
+                id: 2, 
+                title: "Boys Over Flowers", 
+                details: "Dual-Audio [Hindi-korean] COMBINED Fast Download Watch Online | 720p | 1080p WEB-DL", 
+                date: "Nov 3, 2025", 
+                thumbnail: "https://i.postimg.cc/QdcPLBsL/IMG-20251103-131355-805.jpg", 
+                badge: "4K-SDR", 
+                quality: "720p", 
+                categories: ["kdrama", "Korean", "Hindi", "Comedy", "Drama", "Romance"], 
+                languages: ["hindi", "korean"],
+                downloadUrl: "https://gplinks.co/Ziutm6I1" 
+            },
+            { 
+                id: 3, 
+                title: "Nice to Not Meet You", 
+                details: "Nice to Not Meet You 2025 E01 Hindi dubbed 480p 720p 1080p Fast Download  Watch Online ", 
+                date: "Nov 3, 2025", 
+                thumbnail: "https://i.postimg.cc/3JCVHg8t/IMG-20251103-210120-554.jpg", 
+                badge: "TELESYNC", 
+                quality: "1080p", 
+                categories: ["hindi", "kdrama", "romance", "drama", "drama", "comedy"], 
+                languages: ["hindi"],
+                downloadUrl: "https://gplinks.co/C84g3iv" 
+            },
+            { 
+                id: 4, 
+                title: "Re:Monster", 
+                details: "Re:Monster Episode 01 - 12 Japanese, English Hindi - 720p | 1080p Watch Online Fast Download ", 
+                date: "Nov 3, 2025", 
+                thumbnail: "https://i.postimg.cc/J0m0Y9cf/IMG-20251103-222820-323.jpg", 
+                badge: "WEB-DL", 
+                quality: "1080p", 
+                categories: ["anime", "Hindi", "english", "japanese"], 
+                languages: ["japanese", "english", "hindi"],
+                downloadUrl: "https://gplinks.co/ichG3LU" 
+            },
+            { 
+                id: 5, 
+                title: "Bad Girl [2025]", 
+                details: "Bad Girl [2025] Tamil, Telugu, Hindi, Malayalam, Kannada , 480p 720p 1080p , Watch Online  Fast Download ", 
+                date: "Nov 04, 2025", 
+                thumbnail: "https://i.postimg.cc/TwHhvRMN/IMG-20251104-200521-536.jpg", 
+                badge: "WEB-DL", 
+                quality: "1080p", 
+                categories: ["tamil", "telugu", "hindi", "malayalam", "kannada", "South", "drama", "romance", "480p", "720p", "1080p"], 
+                languages: ["tamil", "telugu", "hindi"],
+                downloadUrl: "https://gplinks.co/X8jBhtp" 
+            },
+            { 
+                id: 6, 
+                title: "Dark Nuns [2025]", 
+                details: "Dark Nuns [2025] [Hindi] 480p | 720p | 1080p Fast Download Watch Online ", 
+                date: "Nov 05, 2025", 
+                thumbnail: "https://i.postimg.cc/NfrWp3hQ/IMG-20251105-123941-653.jpg", 
+                badge: "WEB-DL", 
+                quality: "1080p",
+                categories: ["horror", "mystery", "thriller", "hindi", "jiohotstar"], 
+                languages: ["hindi"],
+                downloadUrl: "https://gplinks.co/aTj9" 
+            },
+            { 
+                id: 7, 
+                title: "Dear X [2025]", 
+                details: "Dear X [2025] Korean HMAX DSNP Episode 01 - 04 480p | 720p | Fast Download Watch Online  ", 
+                date: "Nov 07 , 2025", 
+                thumbnail: "https://i.postimg.cc/nz0ZP20D/IMG-20251107-125407-622.jpg", 
+                badge: "DSNP", 
+                quality: "720p", 
+                categories: ["crime", "drama", "romance", "thriller", "korean", "kdrama"], 
+                languages: ["korean"],
+                downloadUrl: "https://gplinks.co/xL1N3Wq" 
+            },
+            { 
+                id: 8, 
+                title: "Lokah Chapter One: Chandra [2025]", 
+                details: "Lokah Chapter One: Chandra [2025] Hindi, Tamil, Telugu, Malayalam, Kannada, Marathi, Bangla 480p | 720p | 1080p | Watch Online  Fast Download ", 
+                date: "Nov 07, 2025", 
+                thumbnail: "https://i.postimg.cc/VsMtrbZj/IMG-20251107-132728-169.jpg", 
+                badge: "WEB-DL", 
+                quality: "1080p", 
+                categories: ["action", "fantasy", "South"], 
+                languages: ["hindi", "tamil", "telugu", "malayalam", "kannada" , "marathi", "bangla"],
+                downloadUrl: "https://gplinks.co/pX5C" 
+            },
+            { 
+                id: 9, 
+                title: "Stranger Things S01 S02 S03 S04", 
+                details: "Stranger Things S01 S02 S03 S04 [English, Hindi, Tamil, Telugu] | 720p | 1080p & Fast Download Watch Online ", 
+                date: "Nov 3, 2025", 
+                thumbnail: "https://i.postimg.cc/P5WyFCdL/IMG-20251102-130520-768.jpg", 
+                badge: "WEB-DL", 
+                quality: "1080p", 
+                categories: ["netflix", "drama", "fantasy", "horror", "ystery", "sci_Fi", "thriller"], 
+                languages: ["english", "hindi", "tamil", "telugu"],
+                downloadUrl: "https://gplinks.co/hnMhvxb" 
+            },
+            { 
+                id: 10, 
+                title: "Haq [2025]", 
+                details: "Haq [2025] Hindi DubbedHQ HDTC 480p 720p 1080p & Watch Online Fast Download ", 
+                date: "Nov 7, 2025", 
+                thumbnail: "https://i.postimg.cc/VLyjQzG9/IMG-20251107-163826-004.jpg", 
+                badge: "HQ HDTC", 
+                quality: "1080p", 
+                categories: ["drama", "bollywood"], 
+                languages: ["hindi"],
+                downloadUrl: "https://gplinks.co/KAxk9HS8" 
+            },
+            { 
+                id: 11, 
+                title: "As You Stood By [2025 -2025]", 
+                details: "As You Stood By [2025 -2025] [Hindi-korean] Combined | 720p | 1080p & Fast Download Watch Online Telegram", 
+                date: "Nov 8, 2025", 
+                thumbnail: "https://i.postimg.cc/xCfxYbKh/IMG-20251108-142252-336.jpg", 
+                badge: "WEB-DL", 
+                quality: "1080p", 
+                categories: [ "crime", "drama", "thriller", "kdrama", "netflix"], 
+                languages: ["hindi", "korean"],
+                downloadUrl: "https://gplinks.co/zgT2cmJ" 
+            },
+            { 
+                id: 12, 
+                title: "Jombieland [2025]", 
+                details: "Jombieland [2025] [ Hindi-Punjabi ] Download 480p | 720p | 1080p & Watch Online Fast Download Telegram", 
+                date: "Nov 8, 2025", 
+                thumbnail: "https://i.postimg.cc/QCDBBnGH/IMG-20251108-175531-983.jpg", 
+                badge: "WEB-DL", 
+                quality: "1080p", 
+                categories: ["comedy"], 
+                languages: ["hindi", "punjabi"],
+                downloadUrl: "https://gplinks.co/3glvrk" 
+            },
+        ];
+
+        const postsGrid = document.getElementById('postsGrid');
+        const paginationContainer = document.getElementById('pagination');
+        
+        const postsPerPage = 9;
+        let currentPage = 1;
+
+        let currentFilters = { category: 'all', quality: 'all', language: 'all', search: '' };
+
+        function createPostCard(post) {
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            const thumbnailFallback = `https://via.placeholder.com/300x450/2a2a2a/ffffff?text=${encodeURIComponent(post.title)}`;
+            
+            card.innerHTML = `
+                <div class="post-thumbnail">
+                    <img src="${post.thumbnail}" alt="${post.title}" loading="lazy" onerror="this.src='${thumbnailFallback}'">
+                    <span class="resolution-badge">${post.quality}</span>
+                    <span class="quality-badge">${post.badge}</span>
+                    <div class="star-badge"><i class="fas fa-star"></i></div>
+                </div>
+                <div class="post-content">
+                    <p class="post-date">${post.date}</p>
+                    <h3 class="post-title">${post.title}</h3>
+                    <div class="post-details-text" title="${post.details}">
+                        ${post.details}
+                    </div>
+                    <a href="${post.downloadUrl}" class="download-btn" target="_blank">
+                       <i class="fas fa-download"></i> Download Now
+                    </a>
+                </div>`;
+            return card;
+        }
+
+        function renderPage() {
+            const filteredPosts = contentData.filter(post => {
+                const matchesSearch = post.title.toLowerCase().includes(currentFilters.search) || post.details.toLowerCase().includes(currentFilters.search);
+                const matchesCategory = currentFilters.category === 'all' || post.categories.includes(currentFilters.category);
+                const matchesQuality = currentFilters.quality === 'all' || post.quality === currentFilters.quality;
+                const matchesLanguage = currentFilters.language === 'all' || post.languages.includes(currentFilters.language);
+                return matchesSearch && matchesCategory && matchesQuality && matchesLanguage;
+            });
+
+            postsGrid.innerHTML = '';
+            
+            if (filteredPosts.length === 0) {
+                postsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-color-light);">No results found. Try a different search or filter.</p>';
+                renderPagination(0);
+                return;
+            }
+
+            const startIndex = (currentPage - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const postsToShow = filteredPosts.slice(startIndex, endIndex);
+
+            postsToShow.forEach(post => {
+                postsGrid.appendChild(createPostCard(post));
+            });
+            
+            renderPagination(filteredPosts.length);
+        }
+
+        function renderPagination(totalPosts) {
+            paginationContainer.innerHTML = '';
+            const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+            if (totalPages <= 1) return;
+
+            const prevButton = document.createElement('button');
+            prevButton.innerHTML = '&laquo; Prev';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPage();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            paginationContainer.appendChild(prevButton);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderPage();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                paginationContainer.appendChild(pageButton);
+            }
+
+            const nextButton = document.createElement('button');
+            nextButton.innerHTML = 'Next &raquo;';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderPage();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            paginationContainer.appendChild(nextButton);
+        }
+
+        function setupEventListeners() {
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            if (localStorage.getItem('theme') === 'light') { 
+                document.body.classList.add('light-mode'); 
+                icon.className = 'fas fa-sun'; 
+            }
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+            });
+
+            // Mobile Menu
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            menuToggle.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+                menuToggle.querySelector('i').className = mobileNav.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !mobileNav.contains(e.target)) {
+                    mobileNav.classList.remove('active');
+                    menuToggle.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+            
+            document.querySelectorAll('.mobile-dropdown-toggle').forEach(toggle => {
+                toggle.addEventListener('click', e => {
+                    e.preventDefault();
+                    const dropdown = toggle.nextElementSibling;
+                    const isActive = dropdown.classList.contains('active');
+                    
+                    // Close all other dropdowns
+                    document.querySelectorAll('.mobile-dropdown').forEach(d => {
+                        if (d !== dropdown) d.classList.remove('active');
+                    });
+                    
+                    // Toggle current dropdown
+                    dropdown.classList.toggle('active');
+                    
+                    // Rotate caret icon
+                    const caret = toggle.querySelector('.fa-caret-down');
+                    if (caret) {
+                        caret.style.transform = isActive ? 'rotate(0deg)' : 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // Universal filter handler function
+            function applyFilter(key, value) {
+                currentPage = 1;
+                currentFilters[key] = value;
+                renderPage();
+            }
+
+            // Search
+            document.getElementById('searchButton').addEventListener('click', () => {
+                applyFilter('search', document.getElementById('searchInput').value.toLowerCase().trim());
+            });
+            document.getElementById('searchInput').addEventListener('keyup', e => {
+                if (e.key === 'Enter') { 
+                    applyFilter('search', e.target.value.toLowerCase().trim()); 
+                }
+            });
+
+            // Colorful Filter Buttons
+            document.querySelectorAll('.filter-btn[data-filter]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const filterValue = button.dataset.filter;
+                    if (button.classList.contains('active')) {
+                        button.classList.remove('active');
+                        applyFilter('category', 'all');
+                    } else {
+                        document.querySelectorAll('.filter-btn.active').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        applyFilter('category', filterValue);
+                    }
+                });
+            });
+
+            // Header Dropdown Filters
+            document.querySelectorAll('a[data-category]').forEach(link => {
+                link.addEventListener('click', e => { 
+                    e.preventDefault(); 
+                    applyFilter('category', link.dataset.category); 
+                    
+                    // Close mobile menu if open
+                    mobileNav.classList.remove('active');
+                    menuToggle.querySelector('i').className = 'fas fa-bars';
+                });
+            });
+            document.querySelectorAll('a[data-quality]').forEach(link => {
+                link.addEventListener('click', e => { 
+                    e.preventDefault(); 
+                    applyFilter('quality', link.dataset.quality); 
+                    
+                    // Close mobile menu if open
+                    mobileNav.classList.remove('active');
+                    menuToggle.querySelector('i').className = 'fas fa-bars';
+                });
+            });
+            // Language Filter
+            document.querySelectorAll('a[data-language]').forEach(link => {
+                link.addEventListener('click', e => { 
+                    e.preventDefault(); 
+                    applyFilter('language', link.dataset.language); 
+                    
+                    // Close mobile menu if open
+                    mobileNav.classList.remove('active');
+                    menuToggle.querySelector('i').className = 'fas fa-bars';
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            renderPage();
+        });
+    </script>
+</body>
+</html>

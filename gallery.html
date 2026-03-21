@@ -1,0 +1,8 @@
+<div class="gallery-grid">
+  {% assign images = include.images | split: "," %}
+  {% for img in images %}
+    <a href="{{ img | strip | relative_url }}" data-lightbox="gallery" data-title="Image {{ forloop.index }}">
+      <img src="{{ img | strip | relative_url }}" alt="Gallery image {{ forloop.index }}" loading="lazy">
+    </a>
+  {% endfor %}
+</div>
